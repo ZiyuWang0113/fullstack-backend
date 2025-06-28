@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prismaClient";
-import bcrypt from "bcryptjs";
-
-export const listUsers = async (request: Request, response: Response) => {
-    const users = await prisma.role.findMany();
-    response.json(users);
-}
+import bcrypt from "bcrypt";
 
 export const createUser = async (request: Request, response: Response) => {
     const { name, email, password, roleId } = request.body;
@@ -21,3 +16,34 @@ export const createUser = async (request: Request, response: Response) => {
     })
     response.json({ message: "User created successfully" });
 }
+
+export const listUsers = async (request: Request, response: Response) => {
+    const users = await prisma.role.findMany();
+    response.json(users);
+}
+
+export const getUser = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const user = await prisma.user.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
+
+    if (!user) {
+        response.status(404).send({ message: "User not found" });
+        return;
+    }
+    response.json(user);
+}
+
+// export const deleteUser = async (request: Request, response: Response) => {
+//     const { id } = request.params;
+//     await prisma.user.delete({
+//         where: {
+//             id: Number(id)
+//         }
+//     });
+
+//     response.json({ message: "User deleted successfully" });
+// }

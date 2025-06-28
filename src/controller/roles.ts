@@ -17,10 +17,12 @@ export const createRole = async (request: Request, response: Response) => {
             name: name,
             permissions: {
                 connect: permissions.map((p: string) => {
-                    return {name: p}
+                    return {
+                        name: p
+                    }
                 })
-            },
-        },
-    });
-    response.json({ message: "Role created successfully" });
+            }
+        }
+    })
+    response.json({ message: 'Role created successfully' });
 }
