@@ -1,21 +1,12 @@
 import express from "express";
-import prisma from "./prismaClient";
+import rolesRouter from "./routes/roles";
 
 const app = express();
+const bodyParser = require('body-parser');
 
-app.get('/', (request, response) => {
-    console.log("Got request")
-    response.send("I got you request!")
-})
+app.use(bodyParser.json());
 
-app.get('/roles', async (request, response) => {
-    const roles = await prisma.role.findMany({
-        include: {
-            permissions: true,
-        },
-    });
-    response.json(roles);
-})
+app.use('/roles', rolesRouter);
 
 app.listen(8888, () => {
     console.log('Server is running on port 8888')

@@ -1,15 +1,9 @@
 import { Router } from "express";
-import prisma from "../prismaClient";
+import {listRoles, createRole} from "../controller/roles";
 
 const router = Router();
 
-router.get("/", async (request, response) => {
-    const roles = await prisma.role.findMany({
-        include: {
-            permissions: true,
-        },
-    });
-    response.json(roles);
-});
+router.get("/", listRoles);
+router.post("/", createRole);
 
 export default router;
