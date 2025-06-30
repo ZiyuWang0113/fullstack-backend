@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prismaClient";
 import bcrypt from "bcrypt";
-import { userInfo } from "os";
 
 export const createUser = async (request: Request, response: Response) => {
     const { name, email, password, roleId } = request.body;
@@ -16,6 +15,31 @@ export const createUser = async (request: Request, response: Response) => {
         }
     })
     response.json({ message: "User created successfully" });
+}
+
+export const updateUser = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const user = await prisma.user.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
+    if (!user) {
+        response.status(404).send({ message: "User not found" });
+        return;
+    }
+
+    await prisma.user.update({
+        where: {
+            id: Number(id),
+        },
+        data: {
+            name: request.body.name || user.name,
+            email: request.body.email || user.email,
+            role: {connect: { id: request.body.roleId || user.role_id }},
+        }
+    });
+    response.json({ message: "User updated successfully" });
 }
 
 export const listUsers = async (request: Request, response: Response) => {
@@ -49,7 +73,7 @@ export const deleteUser = async (request: Request, response: Response) => {
         response.status(404).send({ message: "User not found" });
         return;
     }
-    
+
     await prisma.user.delete({
         where: {
             id: Number(id)
@@ -58,3 +82,5 @@ export const deleteUser = async (request: Request, response: Response) => {
 
     response.json({ message: "User deleted successfully" });
 }
+
+
