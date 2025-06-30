@@ -23,6 +23,7 @@
     "start": "ts-node src/index.ts",
     "test": "echo \"Erorr: no test specified\" && exit 1",
     "createInitialPermissions": "ts-node src/scripts/createInitialPermissions.ts",
-    "createAdminRole": "ts-node src/scripts/createAdminRole.ts"
+    "createAdminRole": "ts-node src/scripts/createAdminRole.ts",
+    "prisma:migrate": "prisma migrate dev"
   }
 }
