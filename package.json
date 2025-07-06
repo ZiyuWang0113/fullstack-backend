@@ -29,6 +29,7 @@
     "createAdminRole": "ts-node src/scripts/createAdminRole.ts",
     "prisma:migrate": "prisma migrate dev",
     "populate:products": "ts-node src/scripts/populateProducts.ts",
-    "populate:orders": "ts-node src/scripts/populateOrders.ts"
+    "populate:orders": "ts-node src/scripts/populateOrders.ts",
+    "postinstall": "prisma generate"
   }
 }
